@@ -13,7 +13,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await api.post("/users/login", form);
+      const { data } = await api.post("/auth/login", form);
       localStorage.setItem("healthSyncUser", JSON.stringify(data));
       navigate("/dashboard");
     } catch (err) {
