@@ -114,7 +114,7 @@ npm run dev
 
 ## 👨‍💻 Authors
 - **Utkarsh Jha** – Frontend Development  
-- **(Teammate’s Name)** – Backend Development  
+- **Astha Dixit** – Backend Development  
 
 ---
 
