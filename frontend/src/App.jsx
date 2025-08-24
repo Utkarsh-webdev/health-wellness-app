@@ -1,3 +1,4 @@
+// App.jsx
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
@@ -6,10 +7,12 @@ import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Community from "./pages/Community"; // ✅ Added
+import Community from "./pages/Community";
+import "./index.css";
+import { useAuth } from "./context/AuthContext"; // ✅ use AuthContext
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("healthSyncUser"));
+  const { user } = useAuth(); // ✅ get user from context
   const location = useLocation();
 
   // Navbar should appear only on certain pages
