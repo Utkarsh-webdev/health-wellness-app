@@ -1,15 +1,23 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // For navigation after logout
-import { User, Lock, Save, Dumbbell, ClipboardPlus, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  User,
+  Lock,
+  Save,
+  Dumbbell,
+  ClipboardPlus,
+  LogOut,
+} from "lucide-react";
 
 const Profile = () => {
   const navigate = useNavigate();
 
-  // Retrieve user data from localStorage
+  // Retrieve logged-in user
   const user = JSON.parse(localStorage.getItem("healthSyncUser"));
 
-  // State to manage form data for profile settings
+  // Profile form state
   const [formData, setFormData] = useState({
+    email: user?.email || "",
     height: "",
     goalWeight: "",
     activityLevel: "",
@@ -18,7 +26,8 @@ const Profile = () => {
     dietaryRestrictions: [],
   });
 
-  // Options
+  const [recommendations, setRecommendations] = useState([]);
+
   const fitnessOptions = [
     "Weight Loss",
     "Weight Gain",
@@ -56,7 +65,7 @@ const Profile = () => {
     "Nut Allergies",
   ];
 
-  // Multi-select toggle
+  // Toggle for multi-select fields
   const handleMultiSelect = (field, value) => {
     setFormData((prev) => {
       const current = prev[field];
@@ -69,25 +78,75 @@ const Profile = () => {
     });
   };
 
-  // Save handler
-  const handleSave = () => {
-    console.log("Profile saved:", formData);
-    alert("Profile saved successfully ✅");
-  };
-
-  // Logout handler
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem("healthSyncUser");
-    navigate("/login"); // redirect to login
+    navigate("/login");
   };
+
+  // Save profile to backend
+  const handleSave = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/profile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+      console.log("✅ Profile saved:", data);
+
+      if (data.success) {
+        alert("Profile saved successfully ✅");
+
+        // fetch recommendations
+        await loadRecommendations();
+      }
+    } catch (err) {
+      console.error("❌ Error saving profile:", err);
+      alert("Failed to save profile ❌");
+    }
+  };
+
+  // Load recommendations from backend
+  const loadRecommendations = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:5000/api/profile/recommendations?email=${formData.email}`
+      );
+      const data = await res.json();
+      setRecommendations(data.recommendations || []);
+    } catch (err) {
+      console.error("❌ Failed to load recommendations:", err);
+    }
+  };
+
+  // Auto-load profile + recommendations on mount
+  useEffect(() => {
+    const loadProfile = async () => {
+      try {
+        const res = await fetch(
+          `http://localhost:5000/api/profile?email=${formData.email}`
+        );
+        if (res.ok) {
+          const data = await res.json();
+          setFormData((prev) => ({ ...prev, ...data.profile }));
+        }
+        await loadRecommendations();
+      } catch (err) {
+        console.error("❌ Failed to load profile:", err);
+      }
+    };
+
+    if (user?.email) loadProfile();
+  }, [user?.email]);
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-4 font-sans">
       {/* Page Header */}
       <h1 className="text-2xl font-bold text-gray-800">Profile Settings</h1>
       <p className="text-gray-500">
-        Manage your health information and preferences for personalized
-        recommendations.
+        Manage your health information and get personalized recommendations.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -95,13 +154,12 @@ const Profile = () => {
         <div className="md:col-span-1 bg-white rounded-xl shadow-sm p-6 border border-gray-200 space-y-6">
           <div className="flex flex-col items-center text-center">
             <div className="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-gray-700">
-              {user?.name?.[0].toUpperCase()}
+              {user?.name?.[0]?.toUpperCase()}
             </div>
             <h2 className="mt-3 font-semibold text-gray-800">{user?.name}</h2>
             <p className="text-sm text-gray-500">{user?.email}</p>
           </div>
 
-          {/* Sidebar Buttons */}
           <div className="space-y-3">
             <button className="flex items-center gap-2 w-full px-3 py-2 rounded-md text-gray-700 hover:bg-gray-100 transition">
               <User size={16} /> Account Settings
@@ -131,9 +189,7 @@ const Profile = () => {
                 Height (cm)
                 <input
                   type="number"
-                  className="w-full appearance-none border border-gray-300 rounded-full px-4 py-2 
-                 text-gray-700 bg-white shadow-sm 
-                 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border border-gray-300 rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   value={formData.height}
                   onChange={(e) =>
                     setFormData({ ...formData, height: e.target.value })
@@ -145,9 +201,7 @@ const Profile = () => {
                 Goal Weight (kg)
                 <input
                   type="number"
-                  className="w-full appearance-none border border-gray-300 rounded-full px-4 py-2 
-                 text-gray-700 bg-white shadow-sm 
-                 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  className="w-full border border-gray-300 rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   value={formData.goalWeight}
                   onChange={(e) =>
                     setFormData({ ...formData, goalWeight: e.target.value })
@@ -157,33 +211,28 @@ const Profile = () => {
             </div>
 
             <div>
-  <label className="block text-gray-700 text-sm font-medium mb-1">
-    Activity Level
-  </label>
-  <div className="relative">
-    <select
-      className="w-full appearance-none border border-gray-300 rounded-full px-4 py-2 
-                 text-gray-700 bg-white shadow-sm 
-                 focus:outline-none focus:ring-2 focus:ring-green-500"
-      value={formData.activityLevel}
-      onChange={(e) =>
-        setFormData({ ...formData, activityLevel: e.target.value })
-      }
-    >
-      <option value="">✨ Select your activity level</option>
-      <option value="sedentary">🪑 Sedentary</option>
-      <option value="light">🚶 Lightly Active</option>
-      <option value="moderate">🏃 Moderately Active</option>
-      <option value="active">🏋️ Very Active</option>
-    </select>
-
-    {/* Dropdown arrow */}
-    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-black-500 pointer-events-none">
-      ▼
-    </span>
-  </div>
-</div>
-
+              <label className="block text-gray-700 text-sm font-medium mb-1">
+                Activity Level
+              </label>
+              <div className="relative">
+                <select
+                  className="w-full border border-gray-300 rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                  value={formData.activityLevel}
+                  onChange={(e) =>
+                    setFormData({ ...formData, activityLevel: e.target.value })
+                  }
+                >
+                  <option value="">✨ Select your activity level</option>
+                  <option value="sedentary">🪑 Sedentary</option>
+                  <option value="light">🚶 Lightly Active</option>
+                  <option value="moderate">🏃 Moderately Active</option>
+                  <option value="active">🏋️ Very Active</option>
+                </select>
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                  ▼
+                </span>
+              </div>
+            </div>
           </div>
 
           {/* Fitness Goals */}
@@ -191,9 +240,6 @@ const Profile = () => {
             <h3 className="font-semibold flex items-center gap-2 text-gray-800">
               <Dumbbell size={18} /> Fitness Goals
             </h3>
-            <p className="text-sm font-medium text-gray-600">
-              Select your fitness goals (multiple allowed)
-            </p>
             <div className="flex flex-wrap gap-2">
               {fitnessOptions.map((goal) => (
                 <button
@@ -216,9 +262,6 @@ const Profile = () => {
             <h3 className="font-semibold flex items-center gap-2 text-gray-800">
               <ClipboardPlus size={18} /> Medical Information
             </h3>
-            <p className="text-sm font-medium text-gray-600">
-              Medical Conditions (optional)
-            </p>
             <div className="flex flex-wrap gap-2 mb-3">
               {medicalOptions.map((cond) => (
                 <button
@@ -236,7 +279,7 @@ const Profile = () => {
             </div>
 
             <p className="text-sm font-medium text-gray-600">
-              Dietary Restrictions (optional)
+              Dietary Restrictions
             </p>
             <div className="flex flex-wrap gap-2">
               {dietaryOptions.map((diet) => (
@@ -264,6 +307,26 @@ const Profile = () => {
               <Save size={16} /> Save Profile
             </button>
           </div>
+
+          {/* Recommendations */}
+{recommendations.length > 0 && (
+  <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200 mt-6">
+    <h3 className="font-semibold text-gray-800 text-lg mb-4 flex items-center gap-2">
+      📌 Personalized Recommendations
+    </h3>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {recommendations.map((rec, i) => (
+        <div
+          key={i}
+          className="flex items-start gap-2 p-3 border border-gray-100 rounded-lg bg-gray-50 hover:bg-green-50 transition"
+        >
+          <span className="text-xl">{rec.split(" ")[0]}</span> {/* Emoji */}
+          <p className="text-gray-700 text-sm leading-relaxed">{rec}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
         </div>
       </div>
     </div>
