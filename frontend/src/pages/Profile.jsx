@@ -7,7 +7,16 @@ import {
   Dumbbell,
   ClipboardPlus,
   LogOut,
+  Info,
+  Heart,
+  Sun,
+  CheckCircle2,
+  AlertTriangle,
+  Leaf,
+  Moon,
+  TrendingUp
 } from "lucide-react";
+
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -98,8 +107,6 @@ const Profile = () => {
 
       if (data.success) {
         alert("Profile saved successfully ✅");
-
-        // fetch recommendations
         await loadRecommendations();
       }
     } catch (err) {
@@ -308,25 +315,37 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* Recommendations */}
-{recommendations.length > 0 && (
-  <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200 mt-6">
-    <h3 className="font-semibold text-gray-800 text-lg mb-4 flex items-center gap-2">
-      📌 Personalized Recommendations
-    </h3>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {recommendations.map((rec, i) => (
-        <div
-          key={i}
-          className="flex items-start gap-2 p-3 border border-gray-100 rounded-lg bg-gray-50 hover:bg-green-50 transition"
-        >
-          <span className="text-xl">{rec.split(" ")[0]}</span> {/* Emoji */}
-          <p className="text-gray-700 text-sm leading-relaxed">{rec}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-)}
+          {/* Recommendations with icons */}
+          {recommendations.length > 0 && (
+            <div className="bg-white rounded-xl shadow-md p-6 border border-gray-200 mt-6">
+              <h3 className="font-semibold text-gray-800 text-lg mb-4 flex items-center gap-2">
+                <Info size={20} /> Personalized Recommendations
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {recommendations.map((rec, i) => {
+  let Icon;
+  if (rec.includes("underweight") || rec.includes("obese")) Icon = AlertTriangle;
+  else if (rec.includes("healthy range")) Icon = CheckCircle2;
+  else if (rec.includes("calorie deficit") || rec.includes("muscle building")) Icon = TrendingUp;
+  else if (rec.includes("cardio") || rec.includes("heart")) Icon = Heart;
+  else if (rec.includes("diet") || rec.includes("vegan") || rec.includes("nutrition")) Icon = Leaf;
+  else if (rec.includes("sleep")) Icon = Moon;
+  else if (rec.includes("active")) Icon = Sun;
+  else Icon = Info;
+
+                  return (
+                    <div
+                      key={i}
+                      className="flex items-start gap-2 p-3 border border-gray-100 rounded-lg bg-gray-50 hover:bg-green-50 transition"
+                    >
+                      <Icon size={20} className="text-green-600 mt-1" />
+                      <p className="text-gray-700 text-sm leading-relaxed">{rec}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

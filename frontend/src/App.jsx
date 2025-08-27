@@ -6,21 +6,22 @@ import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
+import Progress from "./pages/Progress";
 import Profile from "./pages/Profile";
 import Community from "./pages/Community";
 import "./index.css";
-import { useAuth } from "./context/AuthContext"; // ✅ use AuthContext
+import { useAuth } from "./context/AuthContext";
 
-function App() {
-  const { user } = useAuth(); // ✅ get user from context
+function AppContent() {
+  const { user } = useAuth(); // get user from context
   const location = useLocation();
 
-  // Navbar should appear only on certain pages
-  const showNavbarRoutes = ["/dashboard", "/profile", "/community"];
+  // Navbar should appear only on these pages
+  const showNavbarRoutes = ["/dashboard", "/profile", "/community", "/progress"];
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-all duration-300">
-      {/* Navbar only on dashboard/profile/community */}
+      {/* Navbar */}
       {showNavbarRoutes.includes(location.pathname) && <Navbar />}
 
       <Routes>
@@ -28,6 +29,16 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
+        {/* Progress Page (protected if you want) */}
+        <Route
+          path="/progress"
+          element={
+            <ProtectedRoute user={user}>
+              <Progress />
+            </ProtectedRoute>
+          }
+        />
 
         {/* Protected Routes */}
         <Route
@@ -57,17 +68,17 @@ function App() {
           }
         />
 
-        {/* Catch-all route */}
+        {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
   );
 }
 
-export default function AppWrapper() {
+export default function App() {
   return (
     <BrowserRouter>
-      <App />
+      <AppContent />
     </BrowserRouter>
   );
 }
