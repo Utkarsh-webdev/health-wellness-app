@@ -34,16 +34,17 @@ const Dashboard = () => {
     else setGreeting("Good night");
   }, []);
 
-  const data = [
-    { day: "Mon", steps: 2000, goal: 10000 },
-    { day: "Tue", steps: 5000, goal: 10000 },
-    { day: "Wed", steps: 3000, goal: 10000 },
-    { day: "Thu", steps: 7000, goal: 10000 },
-    { day: "Fri", steps: 10000, goal: 10000 },
-    { day: "Sat", steps: 8000, goal: 10000 },
-    { day: "Sun", steps: 6000, goal: 10000 },
-  ];
+ const data = [
+  { day: "Mon", steps: 2000, goal: 10000 },
+  { day: "Tue", steps: 5000, goal: 10000 },
+  { day: "Wed", steps: 3000, goal: 10000 },
+  { day: "Thu", steps: 7000, goal: 10000 },
+  { day: "Fri", steps: 10000, goal: 10000 },
+  { day: "Sat", steps: 8000, goal: 10000 },
+  { day: "Sun", steps: 6000, goal: 10000 },
+];
 
+  // Dummy community posts
   const communityPosts = [
     {
       name: "Kaif Kumar",
@@ -81,37 +82,46 @@ const Dashboard = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Stats Row */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {/* Steps */}
             <Card className="p-6 flex items-center justify-between bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl rounded-2xl shadow-md hover:shadow-lg transition">
               <div>
                 <p className="text-sm text-gray-500">Daily Steps</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">0</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  0
+                </p>
                 <p className="text-xs text-gray-400">Goal: 10,000</p>
               </div>
               <Footprints className="text-blue-500" size={30} />
             </Card>
-
+            {/* Heart */}
             <Card className="p-6 flex items-center justify-between bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl rounded-2xl shadow-md hover:shadow-lg transition">
               <div>
                 <p className="text-sm text-gray-500">Heart Rate</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">72 BPM</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  72 BPM
+                </p>
                 <p className="text-xs text-gray-400">Resting</p>
               </div>
               <Heart className="text-red-500" size={30} />
             </Card>
-
+            {/* Water */}
             <Card className="p-6 flex items-center justify-between bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl rounded-2xl shadow-md hover:shadow-lg transition">
               <div>
                 <p className="text-sm text-gray-500">Water Intake</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">1.8L</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  1.8L
+                </p>
                 <p className="text-xs text-gray-400">Goal: 2.5L</p>
               </div>
               <Droplets className="text-blue-400" size={30} />
             </Card>
-
+            {/* Sleep */}
             <Card className="p-6 flex items-center justify-between bg-white/70 dark:bg-gray-800/60 backdrop-blur-xl rounded-2xl shadow-md hover:shadow-lg transition">
               <div>
                 <p className="text-sm text-gray-500">Sleep Quality</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white">7.5h</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  7.5h
+                </p>
                 <p className="text-xs text-gray-400">Good</p>
               </div>
               <Moon className="text-purple-400" size={30} />
@@ -120,6 +130,7 @@ const Dashboard = () => {
 
           {/* AI Recommendations */}
           <Card className="p-6 bg-white/90 dark:bg-gray-800/60 rounded-2xl shadow-md">
+            {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <Brain className="text-gray-600 dark:text-gray-300" size={28} />
@@ -133,83 +144,203 @@ const Dashboard = () => {
             </div>
 
             <div className="space-y-3">
-              {/* Recommendation Cards */}
-              {[
-                { title: "Deep Breathing", desc: "Practice 5 minutes of deep breathing to reduce stress and improve focus.", icon: Wind, bg: "purple", link: "/profile" },
-                { title: "Daily Walk", desc: "Take a 30-minute brisk walk to boost your daily activity and cardiovascular health.", icon: Footprints, bg: "green", link: "/profile" },
-                { title: "Hydration Focus", desc: "Increase your water intake with herbal teas and water-rich foods to stay hydrated.", icon: Droplets, bg: "blue", link: "/profile" },
-              ].map((rec, idx) => (
-                <div key={idx} className={`p-4 rounded-xl bg-${rec.bg}-50 dark:bg-${rec.bg}-900/40 flex items-start gap-3 hover:bg-${rec.bg}-100 dark:hover:bg-${rec.bg}-800/60 transition`}>
-                  <div className={`w-10 h-10 flex items-center justify-center rounded-full bg-${rec.bg}-500 text-white`}>
-                    <rec.icon size={20} />
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900 dark:text-white">{rec.title}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{rec.desc}</p>
-                    <Link to={rec.link} className="text-blue-500 text-sm">View Details →</Link>
-                  </div>
-                </div>
-              ))}
+              {/* Deep Breathing */}
+<div className="p-4 rounded-xl bg-purple-50 dark:bg-purple-900/40 flex items-start gap-3 hover:bg-purple-100 dark:hover:bg-purple-800/60 transition">
+  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-500 text-white">
+    <Wind size={20} />
+  </div>
+  <div>
+    <p className="font-medium text-gray-900 dark:text-white">Deep Breathing</p>
+    <p className="text-sm text-gray-600 dark:text-gray-400">
+      Practice 5 minutes of deep breathing to reduce stress and improve focus.
+    </p>
+    <Link
+      to="/profile"
+      className="text-blue-500 text-sm"
+    >
+      View Details →
+    </Link>
+  </div>
+</div>
+
+{/* Daily Walk */}
+<div className="p-4 rounded-xl bg-green-50 dark:bg-green-900/40 flex items-start gap-3 hover:bg-green-100 dark:hover:bg-green-800/60 transition">
+  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500 text-white">
+    <Footprints size={20} />
+  </div>
+  <div>
+    <p className="font-medium text-gray-900 dark:text-white">Daily Walk</p>
+    <p className="text-sm text-gray-600 dark:text-gray-400">
+      Take a 30-minute brisk walk to boost your daily activity and cardiovascular health.
+    </p>
+    <Link
+      to="/profile"
+      className="text-blue-500 text-sm"
+    >
+      View Details →
+    </Link>
+  </div>
+</div>
+
+{/* Hydration Focus */}
+<div className="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/40 flex items-start gap-3 hover:bg-blue-100 dark:hover:bg-blue-800/60 transition">
+  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-500 text-white">
+    <Droplets size={20} />
+  </div>
+  <div>
+    <p className="font-medium text-gray-900 dark:text-white">Hydration Focus</p>
+    <p className="text-sm text-gray-600 dark:text-gray-400">
+      Increase your water intake with herbal teas and water-rich foods to stay hydrated.
+    </p>
+    <Link
+      to="/profile/"
+      className="text-blue-500 text-sm"
+    >
+      View Details →
+    </Link>
+  </div>
+</div>
             </div>
           </Card>
 
-          {/* Weekly Progress Chart */}
-          <Card className="p-6 bg-white/90 dark:bg-gray-800/60 rounded-2xl shadow-md">
+          {/* Weekly Progress */}
+<Card className="p-6 bg-white/90 dark:bg-gray-800/60 rounded-2xl shadow-md">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-              <ChartArea /> Weekly Progress
+              <ChartArea size={20} /> Weekly Progress
             </h3>
-            {(() => {
-              const cumulativeData = data.map((d, i) => ({
-                ...d,
-                cumulative: data.slice(0, i + 1).reduce((sum, x) => sum + x.steps, 0),
-              }));
-              const todayIndex = new Date().getDay() - 1;
-              return (
-                <ResponsiveContainer width="100%" height={300} style={{ outline: "none" }}>
-                  <LineChart data={cumulativeData} tabIndex={-1}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                    <XAxis dataKey="day" stroke="#6b7280" />
-                    <YAxis stroke="#6b7280" />
-                    <Tooltip formatter={(value, name) => [value, name === "steps" ? "Steps" : name === "goal" ? "Goal" : "Cumulative"]} />
-                    <Line type="monotone" dataKey="steps" stroke="#3b82f6" strokeWidth={3} dot={({ cx, cy, index }) => (
-                      <circle cx={cx} cy={cy} r={index === todayIndex ? 8 : 5} fill={index === todayIndex ? "#f59e0b" : "#3b82f6"} />
-                    )} />
-                    <Line type="monotone" dataKey="goal" stroke="#10b981" strokeWidth={2} dot={false} strokeDasharray="5 5" />
-                    <Line type="monotone" dataKey="cumulative" stroke="#f97316" strokeWidth={2} dot={false} />
-                  </LineChart>
-                </ResponsiveContainer>
-              );
-            })()}
-          </Card>
+
+  {(() => {
+    // Weekly data
+    const data = [
+      { day: "Mon", steps: 2000, goal: 10000 },
+      { day: "Tue", steps: 5000, goal: 10000 },
+      { day: "Wed", steps: 3000, goal: 10000 },
+      { day: "Thu", steps: 7000, goal: 10000 },
+      { day: "Fri", steps: 10000, goal: 10000 },
+      { day: "Sat", steps: 8000, goal: 10000 },
+      { day: "Sun", steps: 6000, goal: 10000 },
+    ];
+
+    // Compute cumulative steps
+    const cumulativeData = data.map((d, i) => ({
+      ...d,
+      cumulative: data.slice(0, i + 1).reduce((sum, x) => sum + x.steps, 0),
+    }));
+
+    const todayIndex = new Date().getDay() - 1; // Mon=0
+
+    return (
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart  data={cumulativeData} tabIndex={-1}>
+          <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+          <XAxis dataKey="day" stroke="#6b7280" />
+          <YAxis stroke="#6b7280" />
+          <Tooltip
+            formatter={(value, name) => [
+              value,
+              name === "steps"
+                ? "Steps"
+                : name === "goal"
+                ? "Goal"
+                : "Cumulative",
+            ]}
+          />
+          {/* Daily Steps */}
+          <Line
+            type="monotone"
+            dataKey="steps"
+            stroke="#3b82f6"
+            strokeWidth={3}
+            dot={({ cx, cy, index }) => (
+              <circle
+                cx={cx}
+                cy={cy}
+                r={index === todayIndex ? 8 : 5}
+                fill={index === todayIndex ? "#f59e0b" : "#3b82f6"}
+              />
+            )}
+          />
+          {/* Goal */}
+          <Line
+            type="monotone"
+            dataKey="goal"
+            stroke="#10b981"
+            strokeWidth={2}
+            dot={false}
+            strokeDasharray="5 5"
+          />
+          {/* Cumulative Steps */}
+          <Line
+            type="monotone"
+            dataKey="cumulative"
+            stroke="#f97316"
+            strokeWidth={2}
+            dot={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    );
+  })()}
+</Card>
+
         </div>
 
         {/* RIGHT SIDEBAR */}
         <div className="space-y-6">
+          {/* Achievements */}
           <Card className="p-6 bg-white/90 dark:bg-gray-800/60 rounded-2xl shadow-md text-center">
             <h3 className="text-lg font-semibold text-left mb-4 text-gray-900 dark:text-white">
               Recent Achievements
             </h3>
             <Trophy className="mx-auto text-gray-400" size={40} />
-            <p className="mt-3 text-gray-700 dark:text-gray-300 font-medium">No achievements yet</p>
-            <p className="text-sm text-gray-500 dark:text-gray-400">Keep logging data to earn badges!</p>
-            <a href="#" className="mt-4 inline-block text-green-600 font-medium text-sm hover:underline">
+            <p className="mt-3 text-gray-700 dark:text-gray-300 font-medium">
+              No achievements yet
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">
+              Keep logging data to earn badges!
+            </p>
+            <a
+              href="#"
+              className="mt-4 inline-block text-green-600 font-medium text-sm hover:underline"
+            >
               View All Achievements →
             </a>
           </Card>
 
+          {/* Community */}
           <Card className="p-6 bg-white/90 dark:bg-gray-800/60 rounded-2xl shadow-md">
+            {/* Header */}
             <div className="flex justify-between items-center border-b pb-3 mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Community</h3>
-              <Link to="/community" className="text-green-600 text-sm font-medium hover:underline">View All</Link>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                Community
+              </h3>
+              <Link
+                to="/community"
+                className="text-green-600 text-sm font-medium hover:underline"
+              >
+                View All
+              </Link>
             </div>
+
+            {/* Posts */}
             <div className="space-y-4">
               {communityPosts.slice(0, 3).map((post, idx) => (
                 <div key={idx} className="flex items-start gap-3">
-                  <img src={post.avatar} alt={post.name} className="w-10 h-10 rounded-full object-cover border border-gray-200" />
+                  <img
+                    src={post.avatar}
+                    alt={post.name}
+                    className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                  />
                   <div>
-                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">{post.name}</p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{post.message}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">{post.date}</p>
+                    <p className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                      {post.name}
+                    </p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {post.message}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {post.date}
+                    </p>
                   </div>
                 </div>
               ))}
