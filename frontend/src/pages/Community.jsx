@@ -10,26 +10,30 @@ import {
   Trash2,
   SendHorizonal,
   Plus,
+  Filter,
 } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Community = () => {
   const [posts, setPosts] = useState([]);
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("Motivation");
+  const [filter, setFilter] = useState("All");
   const user = JSON.parse(localStorage.getItem("healthSyncUser"));
 
   // Fetch posts
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const { data } = await axios.get("http://localhost:5000/api/posts");
-        setPosts(data);
-      } catch (err) {
-        console.error("Error fetching posts:", err.message);
-      }
-    };
     fetchPosts();
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:5000/api/posts");
+      setPosts(data);
+    } catch (err) {
+      console.error("Error fetching posts:", err.message);
+    }
+  };
 
   // Create post
   const handlePost = async () => {
@@ -90,6 +94,27 @@ const Community = () => {
         return <MessageSquare size={16} className="text-gray-400" />;
     }
   };
+
+  // Relative time formatter
+  const timeAgo = (date) => {
+    const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+    const intervals = {
+      year: 31536000,
+      month: 2592000,
+      day: 86400,
+      hour: 3600,
+      minute: 60,
+    };
+    for (let [unit, value] of Object.entries(intervals)) {
+      const count = Math.floor(seconds / value);
+      if (count > 0) return `${count} ${unit}${count > 1 ? "s" : ""} ago`;
+    }
+    return "Just now";
+  };
+
+  // Filter posts
+  const filteredPosts =
+    filter === "All" ? posts : posts.filter((p) => p.category === filter);
 
   return (
     <div className="p-6 min-h-screen bg-gray-50">
@@ -160,35 +185,49 @@ const Community = () => {
             />
 
             {/* Controls */}
-           <div className="flex justify-between items-center mt-3">
-  <select
-    className="px-4 py-2 border border-green-400 rounded-full bg-white text-gray-700 
-               focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer"
-    value={category}
-    onChange={(e) => setCategory(e.target.value)}
-  >
-    <option className="text-gray-700 bg-white hover:bg-green-100">Motivation</option>
-    <option className="text-gray-700 bg-white hover:bg-green-100">Question</option>
-    <option className="text-gray-700 bg-white hover:bg-green-100">Achievement</option>
-  </select>
+            <div className="flex justify-between items-center mt-3">
+              <select
+                className="px-4 py-2 border border-green-400 rounded-full bg-white text-gray-700 
+                focus:outline-none focus:ring-2 focus:ring-green-500 cursor-pointer"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              >
+                <option>Motivation</option>
+                <option>Question</option>
+                <option>Achievement</option>
+              </select>
 
-  <button
-    onClick={handlePost}
-    className="flex items-center gap-2 px-5 py-2 bg-green-500 text-white 
-               rounded-full hover:bg-green-600 transition"
-  >
-    <SendHorizonal size={16} />
-    Post
-  </button>
-</div>
-
+              <button
+                onClick={handlePost}
+                className="flex items-center gap-2 px-5 py-2 bg-green-500 text-white 
+                rounded-full hover:bg-green-600 transition"
+              >
+                <SendHorizonal size={16} />
+                Post
+              </button>
+            </div>
           </div>
         </div>
       </Card>
 
+      {/* Filter */}
+      <div className="flex items-center gap-3 mb-6">
+        <Filter className="text-gray-500" size={18} />
+        <select
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          className="border px-3 py-1 rounded-lg focus:ring-1 focus:ring-green-500"
+        >
+          <option>All</option>
+          <option>Motivation</option>
+          <option>Question</option>
+          <option>Achievement</option>
+        </select>
+      </div>
+
       {/* Posts List */}
       <div className="space-y-4">
-        {posts.length === 0 ? (
+        {filteredPosts.length === 0 ? (
           <Card className="p-10 text-center text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-300">
             <UserCircle className="mx-auto mb-3 text-gray-400" size={40} />
             <p className="font-medium">No posts yet</p>
@@ -197,53 +236,63 @@ const Community = () => {
             </p>
           </Card>
         ) : (
-          posts.map((post) => (
-            <Card key={post._id} className="p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition">
-              <div className="flex justify-between items-center">
-                {/* User Info + Category */}
-                <div className="flex items-center gap-2">
-                  {getCategoryIcon(post.category)}
-                  <div>
-                    <p className="font-semibold">{post.user?.name}</p>
-                    <p className="text-xs text-gray-500">{post.category}</p>
+          <AnimatePresence>
+            {filteredPosts.map((post) => (
+              <motion.div
+                key={post._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition">
+                  <div className="flex justify-between items-center">
+                    {/* User Info + Category */}
+                    <div className="flex items-center gap-2">
+                      {getCategoryIcon(post.category)}
+                      <div>
+                        <p className="font-semibold">{post.user?.name}</p>
+                        <p className="text-xs text-gray-500">{post.category}</p>
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => handleLike(post._id)}
+                        className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition"
+                      >
+                        <Heart
+                          size={18}
+                          className={
+                            post.likes.includes(user._id)
+                              ? "fill-red-500 text-red-500"
+                              : ""
+                          }
+                        />
+                        {post.likes.length}
+                      </button>
+
+                      {post.user?._id === user._id && (
+                        <button
+                          onClick={() => handleDelete(post._id)}
+                          className="text-gray-400 hover:text-red-500 transition"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                {/* Actions */}
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => handleLike(post._id)}
-                    className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition"
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        post.likes.includes(user._id)
-                          ? "fill-red-500 text-red-500"
-                          : ""
-                      }
-                    />
-                    {post.likes.length}
-                  </button>
-
-                  {post.user?._id === user._id && (
-                    <button
-                      onClick={() => handleDelete(post._id)}
-                      className="text-gray-400 hover:text-red-500 transition"
-                    >
-                      <Trash2 size={18} />
-                    </button>
-                  )}
-                </div>
-              </div>
-
-              {/* Content */}
-              <p className="mt-3 text-gray-700">{post.content}</p>
-              <p className="text-xs text-gray-400 mt-2">
-                {new Date(post.createdAt).toLocaleString()}
-              </p>
-            </Card>
-          ))
+                  {/* Content */}
+                  <p className="mt-3 text-gray-700">{post.content}</p>
+                  <p className="text-xs text-gray-400 mt-2">
+                    {timeAgo(post.createdAt)}
+                  </p>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         )}
       </div>
     </div>

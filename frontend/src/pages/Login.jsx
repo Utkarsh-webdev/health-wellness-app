@@ -47,7 +47,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-blue-50 to-green-100 px-4 relative">
       <div className="relative bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-8 w-full max-w-md border border-green-100">
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-green-400 to-green-600 text-white text-3xl shadow-md">
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white text-3xl shadow-md">
           🌱
         </div>
 
@@ -67,7 +67,7 @@ const Login = () => {
               placeholder="Email"
               onChange={onChange}
               required
-              className="w-full pl-10 pr-4 py-3 border rounded-full focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
+              className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
             />
           </div>
 
@@ -79,13 +79,13 @@ const Login = () => {
               placeholder="Password"
               onChange={onChange}
               required
-              className="w-full pl-10 pr-4 py-3 border rounded-full focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
+              className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
             />
           </div>
 
           <button
             disabled={loading}
-            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-full font-medium hover:scale-[1.02] transition-transform shadow-md hover:shadow-lg disabled:opacity-70"
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-medium hover:scale-[1.02] transition-transform shadow-md hover:shadow-lg disabled:opacity-70"
           >
             {loading ? "Logging in..." : "Login"}
           </button>
@@ -127,13 +127,13 @@ const Login = () => {
                   value={resetEmail}
                   onChange={(e) => setResetEmail(e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-3 border rounded-full focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
+                  className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-400 focus:border-green-400 outline-none transition shadow-sm hover:shadow-md"
                 />
               </div>
 
               <button
                 disabled={resetLoading}
-                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-full font-medium hover:scale-[1.02] transition-transform shadow-md hover:shadow-lg disabled:opacity-70"
+                className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-medium hover:scale-[1.02] transition-transform shadow-md hover:shadow-lg disabled:opacity-70"
               >
                 {resetLoading ? "Sending..." : "Send Reset Link"}
               </button>
