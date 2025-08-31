@@ -47,7 +47,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-blue-50 to-green-100 px-4 relative">
       <div className="relative bg-white/70 backdrop-blur-lg shadow-xl rounded-3xl p-8 w-full max-w-md border border-green-100">
-        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-lg bg-gradient-to-r from-green-400 to-green-600 text-white text-3xl shadow-md">
+        <div className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-green-400 to-green-600 text-white text-3xl shadow-md">
           🌱
         </div>
 
