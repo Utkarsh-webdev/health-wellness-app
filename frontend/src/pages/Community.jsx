@@ -12,7 +12,7 @@ import {
   Plus,
   Filter,
 } from "lucide-react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Community = () => {
   const [posts, setPosts] = useState([]);
@@ -212,18 +212,21 @@ const Community = () => {
 
       {/* Filter */}
       <div className="flex items-center gap-3 mb-6">
-        <Filter className="text-gray-500" size={18} />
-        <select
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="border px-3 py-1 rounded-lg focus:ring-1 focus:ring-green-500"
-        >
-          <option>All</option>
-          <option>Motivation</option>
-          <option>Question</option>
-          <option>Achievement</option>
-        </select>
-      </div>
+  <Filter className="text-gray-500" size={18} />
+  <select
+    value={filter}
+    onChange={(e) => setFilter(e.target.value)}
+    className="px-4 py-2 border border-gray-300 rounded-full bg-white shadow-sm 
+               text-gray-700 focus:outline-none focus:ring-2 focus:ring-green-500 
+               hover:border-green-400 transition cursor-pointer"
+  >
+    <option value="All">🌍 All</option>
+    <option value="Motivation">💡 Motivation</option>
+    <option value="Question">❓ Question</option>
+    <option value="Achievement">🏆 Achievement</option>
+  </select>
+</div>
+
 
       {/* Posts List */}
       <div className="space-y-4">
