@@ -13,20 +13,22 @@ const Register = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const submitHandler = async (e) => {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const { data } = await api.post("/users/register", form);
-      localStorage.setItem("healthSyncUser", JSON.stringify(data));
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err?.response?.data?.message || "Registration failed");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  e.preventDefault();
+  setError("");
+  setLoading(true);
+  try {
+    // Correct endpoint
+    const { data } = await api.post("/users/register", form);
+    localStorage.setItem("healthSyncUser", JSON.stringify(data));
+    navigate("/dashboard");
+  } catch (err) {
+    setError(err?.response?.data?.message || "Registration failed");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-100 via-blue-50 to-green-100 px-4">

@@ -3,8 +3,9 @@ import axios from "axios";
 
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // ✅ env से ले रहा है
+  baseURL: import.meta.env.VITE_API_URL, // should be https://health-wellness-app.onrender.com
 });
+
 
 
 // Attach token automatically
