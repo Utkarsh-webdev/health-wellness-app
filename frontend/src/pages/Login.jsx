@@ -17,7 +17,8 @@ const Login = () => {
     setError("");
     setLoading(true);
     try {
-      const { data } = await api.post("/users/login", form);
+      // ✅ Correct endpoint (no extra /users)
+      const { data } = await api.post("/login", form);
       localStorage.setItem("healthSyncUser", JSON.stringify(data));
       navigate("/dashboard");
     } catch (err) {
@@ -42,7 +43,6 @@ const Login = () => {
           Log in to continue your wellness journey ✨
         </p>
 
-        {/* Error message */}
         {error && (
           <p className="mb-4 text-sm text-center text-red-600 bg-red-100 py-2 rounded-lg">
             {error}
@@ -51,10 +51,7 @@ const Login = () => {
 
         <form onSubmit={submitHandler} className="space-y-4">
           <div className="relative group">
-            <Mail
-              className="absolute left-3 top-3 text-gray-400 group-focus-within:text-green-500 transition"
-              size={18}
-            />
+            <Mail className="absolute left-3 top-3 text-gray-400 group-focus-within:text-green-500 transition" size={18} />
             <input
               name="email"
               type="email"
@@ -66,10 +63,7 @@ const Login = () => {
           </div>
 
           <div className="relative group">
-            <Lock
-              className="absolute left-3 top-3 text-gray-400 group-focus-within:text-green-500 transition"
-              size={18}
-            />
+            <Lock className="absolute left-3 top-3 text-gray-400 group-focus-within:text-green-500 transition" size={18} />
             <input
               name="password"
               type="password"
