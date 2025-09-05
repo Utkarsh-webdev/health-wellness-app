@@ -16,6 +16,10 @@ build/
 .env.test.local
 .env.production.local
 
+
+# production.ene file
+.env.*
+
 # OS-specific files
 .DS_Store
 Thumbs.db
