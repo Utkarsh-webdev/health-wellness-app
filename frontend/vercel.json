@@ -1,10 +1,10 @@
 {
+  "builds": [
+    { "src": "package.json", "use": "@vercel/static-build" }
+  ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://health-wellness-app.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "builds": [
-    { "src": "frontend/package.json", "use": "@vercel/static-build" }
   ],
   "env": {
     "VITE_API_URL": "https://health-wellness-app.onrender.com/api"
