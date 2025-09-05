@@ -1,10 +1,11 @@
 import axios from "axios";
 
-console.log("API Base URL:", import.meta.env.VITE_API_URL); // ✅ Debug log
+
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // ✅ use env variable
+  baseURL: import.meta.env.VITE_API_URL, // ✅ env से ले रहा है
 });
+
 
 // Attach token automatically
 api.interceptors.request.use((config) => {
