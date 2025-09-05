@@ -1,7 +1,7 @@
 import axios from "axios";
 
 
-
+console.log("👉 API baseURL (from env) =", import.meta.env.VITE_API_URL);
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL, // should be https://health-wellness-app.onrender.com
 });
