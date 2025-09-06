@@ -1,6 +1,7 @@
 # Node.js backend
 node_modules/
 .env
+.env.production
 dist/
 build/
 npm-debug.log*
