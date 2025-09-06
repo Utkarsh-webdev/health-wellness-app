@@ -13,6 +13,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Root test route
+app.get("/", (req, res) => {
+  res.send("API is running... ✅");
+});
+
 // Routes
 app.use("/api/users", authRoutes);
 app.use("/api/posts", postRoutes);
