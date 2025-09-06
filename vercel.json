@@ -1,6 +1,6 @@
 {
   "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" }
+    { "src": "frontend/package.json", "use": "@vercel/static-build" }
   ],
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://health-wellness-app.onrender.com/api/$1" },
